@@ -45,6 +45,7 @@ public class Flasher {
    private JLabel headerLabel;
    private JLabel statusLabel;
    private JPanel controlPanel;
+   private String serial;
 
    public Flasher(){
       prepareGUI();
@@ -122,14 +123,10 @@ public class Flasher {
 
       mainFrame.setVisible(true);  
    }
-   private void getInfo(){
-   	String command = "dfu-util -l";
-   	String output = executeCommand(command);
-   	System.out.println(output);
+   private void log(String data){
       try {
          FileWriter myWriter = new FileWriter("log.txt", true);
-         myWriter.write(output);
-         //myWriter.write("Files in Java might be tricky, but it is fun enough!");
+         myWriter.write(data);
          myWriter.close();
          System.out.println("Successfully wrote to the file.");
       } catch (IOException e) {
@@ -137,20 +134,17 @@ public class Flasher {
          e.printStackTrace();
       }
    }
+   private void getInfo(){
+   	String command = "dfu-util -l";
+   	String output = executeCommand(command);
+   	System.out.println(output);
+      log(output);
+   }
    private void flash(){
    	String command = "make recover";
    	String output = executeCommand(command);
    	System.out.println(output);
-      try {
-         FileWriter myWriter = new FileWriter("log.txt", true);
-         myWriter.write(output);
-         //myWriter.write("Files in Java might be tricky, but it is fun enough!");
-         myWriter.close();
-         System.out.println("Successfully wrote to the file.");
-      } catch (IOException e) {
-         System.out.println("An error occurred.");
-         e.printStackTrace();
-      }
+      log(output);
    }
    public static String executeCommand(String command) {
    	StringBuffer output = new StringBuffer();
